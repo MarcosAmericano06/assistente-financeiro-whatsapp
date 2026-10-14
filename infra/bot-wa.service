@@ -1,0 +1,18 @@
+# Copiar para /etc/systemd/system/bot-wa.service na VM (ajuste usuário e pasta), depois:
+#   sudo systemctl daemon-reload && sudo systemctl enable --now bot-wa
+[Unit]
+Description=Assistente financeiro (WhatsApp + agendador)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/bot-financeiro
+ExecStart=/usr/bin/npx tsx --env-file=.env src/main.ts
+Restart=always
+RestartSec=10
+Environment=WA_SESSION_DIR=/home/ubuntu/bot-financeiro/wa-session
+
+[Install]
+WantedBy=multi-user.target
